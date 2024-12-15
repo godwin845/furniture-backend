@@ -5,8 +5,7 @@ const bcrypt = require('bcrypt');
 
 const app = express();
 
-const HOST = '192.168.56.73';
-const PORT = 5000;
+const PORT = 10000;
 
 // Middleware
 app.use(express.json());
@@ -151,5 +150,5 @@ app.delete('/api/products/:id', async (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://${HOST}:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
