@@ -1,3 +1,5 @@
+require('dotenv').config(); // Load environment variables
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -5,7 +7,8 @@ const bcrypt = require('bcrypt');
 
 const app = express();
 
-const PORT = 10000;
+const HOST = process.env.HOST || '0.0.0.0';
+const PORT = process.env.PORT || 10000; // Use environment variable for port
 
 // Middleware
 app.use(express.json());
@@ -13,7 +16,7 @@ app.use(cors());
 
 // Connect to MongoDB
 mongoose
-  .connect('mongodb+srv://godwinraj845:product@product.qyt5j.mongodb.net/?retryWrites=true&w=majority&appName=Product')
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
@@ -37,7 +40,6 @@ app.get('/api/auth/users', async (req, res) => {
     res.status(500).json({ message: 'Error fetching users.' });
   }
 });
-
 
 // Register
 app.post('/api/auth/register', async (req, res) => {
@@ -110,7 +112,6 @@ app.post('/api/products', async (req, res) => {
   }
 });
 
-
 // PUT - Update existing product by ID
 app.put('/api/products/:id', async (req, res) => {
   const { name, price, imageUrl } = req.body;
@@ -132,7 +133,6 @@ app.put('/api/products/:id', async (req, res) => {
   }
 });
 
-
 // DELETE - Remove a product by ID
 app.delete('/api/products/:id', async (req, res) => {
   try {
@@ -148,7 +148,6 @@ app.delete('/api/products/:id', async (req, res) => {
   }
 });
 
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`Server running on http://${HOST}:${PORT}`);
 });
